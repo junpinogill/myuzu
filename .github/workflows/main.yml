@@ -1,16 +1,18 @@
 name: Build yuzu AddMemorySniffer
 on:
-  workflow_dispatch: # 允许手动触发
+  workflow_dispatch
 
 jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - name: Checkout code
+      - name: Checkout AddMemorySniffer branch
         uses: actions/checkout@v4
         with:
-          ref: 50d54237b # 锁定你要的 commit
+          repository: yuzu-emu/yuzu
+          ref: 50d54237b
           submodules: 'recursive'
+          fetch-depth: 0
 
       - name: Install dependencies
         run: |
