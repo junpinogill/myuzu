@@ -1,0 +1,42 @@
+name: Build yuzu AddMemorySniffer
+on:
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: 50d54237b # 锁定你要的 commit
+          submodules: 'recursive'
+
+      - name: Install dependencies
+        run: |
+          choco install -y cmake --install-arguments="/ADD_TO_PATH=Yes"
+          choco install -y python3
+          choco install -y vulkan-sdk
+
+      - name: Setup MSVC
+        uses: microsoft/setup-msbuild@v2
+
+      - name: CMake configure
+        run: |
+          mkdir build
+          cd build
+          cmake .. -G "Visual Studio 17 2022" -A x64 `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DYUZU_USE_BUNDLED_VCPKG=ON `
+            -DYUZU_TESTS=OFF
+
+      - name: Build
+        run: |
+          cd build
+          cmake --build . --config Release -j $env:NUMBER_OF_PROCESSORS
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: yuzu-AddMemorySniffer-win64
+          path: build/bin/Release/
