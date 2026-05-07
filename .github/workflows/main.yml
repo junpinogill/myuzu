@@ -9,7 +9,7 @@ jobs:
       - name: Checkout yuzu source code
         uses: actions/checkout@v4
         with:
-          # 修正了地址：github.com 不是 githhub.com
+          # 这里用简写形式，完全避免拼写错误
           repository: yuzu-emu/yuzu
           ref: 50d54237b
           submodules: 'recursive'
