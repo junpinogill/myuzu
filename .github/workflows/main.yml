@@ -1,6 +1,6 @@
 name: Build yuzu AddMemorySniffer
 on:
-  workflow_dispatch: # 允许手动触发
+  workflow_dispatch
 
 jobs:
   build-windows:
@@ -9,6 +9,7 @@ jobs:
       - name: Checkout yuzu source code
         uses: actions/checkout@v4
         with:
+          # 修正了地址：github.com 不是 githhub.com
           repository: yuzu-emu/yuzu
           ref: 50d54237b
           submodules: 'recursive'
